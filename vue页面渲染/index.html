@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="never">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/index.css">
+    <script src="./axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+</head>
+<body>
+    <div id="app">
+        <!-- <button class="btn" @click="getData">渲染页面</button> -->
+        <div class="wrap">
+            <h3>{{title}}</h3>
+            <div class="box">
+                <div class="box-items" v-for="items in arrData">
+                    <div class="box-img">
+                        <div class="model">
+                            <div class="m-text">{{items.content}}</div>
+                        </div>
+                        <div class="m-f-text">{{dealTime(items.duration)}}</div>
+                        <img :src="items.share_info.image">
+                    </div>
+                    <div class="box-title">{{items.title}}</div>
+                    <div class="text-des">
+                        <span>{{(items.categories[1])?(items.categories[1].category_name +'-'+items.categories[1].sub.category_name):'' }}</span>
+                        <span>{{items.categories[0].category_name +'-'+items.categories[0].sub.category_name}}</span>
+                    </div>
+                    <div class="box-footer">
+                        <div class="bf-img"></div>
+                        <div class="built-people">{{items.author}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+       let vm= new Vue({
+            data:{
+                arrData:[],
+                title:''
+            },
+            methods:{
+                getData(){
+                    axios.get('./selection.json').then(datas=>{
+                       let currentData=datas.data.data.children;
+                       this.dealData(currentData);
+                    })
+                },
+                dealData(value){
+                    this.arrData=[];
+                    this.title=value[0].model.title;
+                 this.arrData=value.filter(it=>{
+                    return it.type!='mTitle'
+                   }).map(items=>{
+                    let object=items.children[0]?.model?.resource||{}
+                    return {
+                        ...object,
+                        author:object.team_user_count?`${object.team_user_count}位创作人`:`${object.author.userinfo.username}`
+
+                    }
+                   });
+                   
+                   console.log(this.arrData)
+                   
+                   
+                },
+                dealTime(time){
+                    let s=parseInt(time/60);
+                    s=s>=10?s:'0'+s;
+                    let m=parseInt(time%60);
+                    m=m>=10?m:'0'+m;
+                    return s+"'"+m+" ''";
+                }
+            }
+        }).$mount('#app')
+        
+        vm. getData();
+   </script>
+</body>
+</html>
