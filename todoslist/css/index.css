@@ -1,0 +1,168 @@
+@charset "UTF-8";
+* {
+  margin: 0px;
+  padding: 0px; }
+
+.auto-img {
+  display: block;
+  width: 100%; }
+
+.wrap {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  min-height: 720px;
+  height: 100%;
+  padding: 30px 0px;
+  background: #ffb4b6; }
+
+.box {
+  box-sizing: border-box;
+  width: 440px;
+  border-radius: 15px;
+  padding: 30px 40px 20px;
+  background: #f2f2f2;
+  user-select: none; }
+  .box .box-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 360px;
+    height: 88px; }
+    .box .box-header .box-header-img {
+      width: 80px;
+      height: 88px;
+      margin-right: 10px; }
+    .box .box-header .box-header-title {
+      padding: 10px;
+      font-size: 13px;
+      font-weight: bold;
+      color: #fff;
+      background: #fe7345;
+      border-radius: 3px 5px 10px 5px;
+      transform: rotate(5deg); }
+
+.box-forms {
+  width: 360px;
+  height: 82px;
+  margin-top: 25px; }
+  .box-forms .box-forms-title {
+    height: 33px;
+    line-height: 33px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+    color: #494a4b;
+    padding-bottom: 18px; }
+  .box-forms .box-form-field {
+    display: flex;
+    width: 100%; }
+    .box-forms .box-form-field #box-field-search {
+      outline: none;
+      border: none;
+      border-bottom: 3px dashed #fe7345;
+      background: none;
+      width: 235px;
+      height: 31px;
+      line-height: 31px;
+      margin-right: 15px; }
+      .box-forms .box-form-field #box-field-search::placeholder {
+        color: #999;
+        font-size: 14px; }
+    .box-forms .box-form-field .box-field-submit {
+      position: relative;
+      font-size: 15px;
+      padding: 5px 10px;
+      border: 2px solid rgba(26, 26, 26, 0.767);
+      border-radius: 6px;
+      background: #fff;
+      z-index: 2;
+      transform-origin: bottom right;
+      cursor: pointer; }
+      .box-forms .box-form-field .box-field-submit.af::after {
+        position: absolute;
+        left: 0px;
+        bottom: -4px;
+        display: block;
+        content: '';
+        width: 100%;
+        height: 3px;
+        border-radius: 0px 0px 6px 6px;
+        background-color: #fe7345;
+        background-image: url(../image/下载.png);
+        z-index: 1; }
+
+.box-add-data {
+  margin-top: 40px;
+  list-style: none; }
+  .box-add-data > li {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0px 10px 8px;
+    z-index: 1; }
+    .box-add-data > li .box-add-left > span:nth-child(1) {
+      margin-right: 10px; }
+    .box-add-data > li .box-delet-btn {
+      font-weight: bold;
+      cursor: pointer; }
+    .box-add-data > li .clk-layer {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      width: 100%;
+      height: 100%;
+      padding: 0px 5px;
+      background: #fe7345;
+      border-radius: 5px;
+      z-index: -1; }
+
+.box-footer {
+  margin-top: 30px; }
+  .box-footer .box-init-page {
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    font-size: 14px;
+    color: #999; }
+  .box-footer .box-select-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px; }
+    .box-footer .box-select-bar .box-sb-right {
+      display: flex; }
+      .box-footer .box-select-bar .box-sb-right .bx {
+        padding: 3px 9px;
+        cursor: pointer; }
+      .box-footer .box-select-bar .box-sb-right .changeStyle {
+        background: #fe7345;
+        color: #fff;
+        border-radius: 5px; }
+
+.wordColor {
+  color: #fff;
+  text-decoration: line-through; }
+
+.demo-enter {
+  transform: scaleX(0.7); }
+
+.demo-enter-active {
+  transition: all .2s linear; }
+
+.demo-enter-to {
+  transform: scaleX(1); }
+
+.move-enter {
+  transform: rotateX(45deg); }
+
+.move-enter-active {
+  transition: all .5s ease-in-out; }
+
+.move-enter-to {
+  transform: rotateX(-45deg); }
+
+/*# sourceMappingURL=index.css.map */

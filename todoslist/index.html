@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <link rel="stylesheet" href="./css/index.css">
+    <script src="./js/velocity.min.js"></script>
+
+</head>
+
+<body>
+    <div id="app">
+        <div class="wrap" @mouseup="mouseUpEvent">
+            <div class="box">
+                <div class="box-header">
+                    <div class="box-header-img"><img src="./image/note.svg" class="auto-img">
+                    </div>
+                    <div class="box-header-title">To-Do List</div>
+                </div>
+                <div class="box-forms">
+                    <div class="box-forms-title">~ Today I need to ~</div>
+                    <div class="box-form-field">
+                        <input type="text" id="box-field-search" placeholder="Add new todo..." ref="field">
+                        <div class="box-field-submit" :class='{af:judge}' :style='{transform:changeTransform}'
+                            @mousedown="mouseDownEvent">Submit</div>
+                    </div>
+                </div>
+
+                <ul class="box-add-data">
+                    <li v-for="(items,indexs) in arrValue" :key="indexs" v-show="isSelectShowHide[indexs]||allShow">
+                        <div class="box-add-left"><span><input type="checkbox" @click="getIndexValue(indexs)"
+                                    :checked="numArr[indexs]"></span><span :class="{wordColor:numArr[indexs]}">{{items}}</span></div>
+                        <div class="box-delet-btn" @click="deleteEvent($event,indexs)" :data-name="indexs">x</div>
+                        <transition name="move">
+                            <div class="clk-layer" :data-indexs="indexs" v-show="numArr[indexs]"></div>
+                        </transition>
+                    </li>
+                </ul>
+
+                <div class="box-footer">
+                    <transition name="demo">
+                        <div class="box-init-page" v-show="isDisplay">Congrat, you have no more tasks to do</div>
+                    </transition>
+                    <div class="box-select-bar" v-show="!isDisplay">
+                        <div class="box-sb-left"><span>{{arrValue.length - count}}</span> <span>item left</span></div>
+                        <div class="box-sb-right">
+                            <div class="bx box-all" :class="{changeStyle:cName==item}" v-for="item in selectArr"
+                                v-show="isSame && arrValue.length>1 || item=='All'" @click="sliceBlock(item)">{{item}}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        new Vue({
+            data: {
+                changeTransform: 'rotate(5deg)',
+                arrValue: [],
+                judge: true,
+                isDisplay: true,
+                isDelete: true,
+                cName: 'All',
+                isSame: false,
+                selectArr: ['All', 'Active', 'Completed', 'Clear completed'],
+                numArr: [],
+                count: 0,
+                isSelectShowHide: [],
+                allShow: true
+            },
+            methods: {
+                mouseDownEvent() {
+                    this.judge = false;
+                    this.changeTransform = 'none';
+                    let currentValue = this.$refs.field.value
+                    if (currentValue) {
+                        this.arrValue.push(currentValue);
+                        this.numArr.push(false);
+                        this.$refs.field.value = '';
+                        this.isDisplay = false;
+                    }
+                },
+                mouseUpEvent() {
+                    this.judge = true;
+                    this.changeTransform = 'rotate(5deg)'
+                },
+                getIndexValue(val) {
+                    if (!this.numArr[val]) {
+                        this.numArr[val] = true;
+                    } else {
+                        this.numArr[val] = false;
+                    }
+                    this.numArr = [...this.numArr];
+                    let je = false;
+
+                    for (let i = 0; i < this.numArr.length; i++) {
+                        if (this.numArr[i]) {
+                            je = true;
+                            break;
+                        }
+                    }
+                    this.isSame = je;
+
+                    this.countBar();
+                    this.sliceBlock(this.cName);
+                },
+                deleteEvent(el, ind) {
+                    let val = el.target.dataset.name;
+                    this.arrValue = this.arrValue.filter((items, index) => {
+                        return index != val
+                    })
+                    this.numArr = this.numArr.filter((it, inde) => {
+                        return inde != val
+                    })
+
+
+                    if (this.arrValue.length == 0) {
+                        this.isDisplay = true;
+                        this.isSame= false
+                    } else {
+                        if (this.arrValue.length == 1) {
+                            this.cName = 'All';
+                            this.allShow = true;
+                        }
+
+                    }
+
+                    this.sliceBlock(this.cName);
+                    this.countBar();
+                },
+                sliceBlock(value) {
+                    this.cName = value;
+                    if (value == 'All') {
+                        this.allShow = true;
+                    }
+
+                    if (value == 'Active') {
+                        this.isSelectShowHide = [];
+                        this.allShow = false;
+                        for (let i = 0; i < this.numArr.length; i++) {
+                            if (this.numArr[i]) {
+
+                                this.isSelectShowHide[i] = false
+                            } else {
+                                this.isSelectShowHide[i] = true;
+                            }
+                        }
+
+                        let ac = 0;
+                        for (let i = 0; i < this.isSelectShowHide.length; i++) {
+                            if (this.isSelectShowHide[i]) {
+                                ac++
+                            }
+                        }
+                        if (ac == 0) {
+                            this.cName = 'All';
+                            this.allShow = true;
+                        }
+                    }
+                    if (value == 'Completed') {
+                        this.isSelectShowHide = [];
+                        this.allShow = false;
+                        this.isSelectShowHide = [...this.numArr];
+
+                        let co = 0;
+                        for (let i = 0; i < this.isSelectShowHide.length; i++) {
+                            if (this.isSelectShowHide[i]) {
+                                co++
+                            }
+                        }
+                        if (co == 0) {
+                            this.cName = 'All';
+                            this.allShow = true;
+                        }
+                    }
+                    if (value === 'Clear completed') {
+                        let a = [];
+                        let b = [];
+                        for (let i = 0; i < this.numArr.length; i++) {
+                            if (!this.numArr[i]) {
+                                a.push(this.arrValue[i]);
+                                b.push(this.numArr[i]);
+                            }
+                        }
+                        this.arrValue = [...a];
+                        this.numArr = [...b];
+                        this.count = 0;
+                        this.allShow = true;
+                        this.cName = 'All';
+                        if (this.numArr.length == 0) {
+                            this.isDisplay = true;
+                            this.isSame= false
+                        }
+
+                    }
+
+                },
+                countBar() {
+                    let c = 0;
+                    for (let y = 0; y < this.numArr.length; y++) {
+                        if (this.numArr[y]) {
+                            c++;
+                        }
+                    }
+                    this.count = c;
+                }
+
+            }
+        }).$mount('#app')
+    </script>
+</body>
+
+</html>
