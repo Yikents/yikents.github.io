@@ -136,8 +136,13 @@
     .box-footer .box-select-bar .box-sb-right {
       display: flex; }
       .box-footer .box-select-bar .box-sb-right .bx {
-        padding: 3px 9px;
-        cursor: pointer; }
+        padding: 3px 7px;
+        cursor: pointer;
+        margin: 0px 3px; }
+        .box-footer .box-select-bar .box-sb-right .bx:first-child {
+          margin-right: 0px; }
+        .box-footer .box-select-bar .box-sb-right .bx:nth-child(2) {
+          margin-left: 6px; }
       .box-footer .box-select-bar .box-sb-right .changeStyle {
         background: #fe7345;
         color: #fff;
@@ -146,6 +151,11 @@
 .wordColor {
   color: #fff;
   text-decoration: line-through; }
+
+.moveBock {
+  color: #fff;
+  background-color: #fe7345;
+  border-radius: 5px; }
 
 .demo-enter {
   transform: scaleX(0.7); }

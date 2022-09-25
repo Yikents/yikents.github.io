@@ -48,8 +48,8 @@
                     <div class="box-select-bar" v-show="!isDisplay">
                         <div class="box-sb-left"><span>{{arrValue.length - count}}</span> <span>item left</span></div>
                         <div class="box-sb-right">
-                            <div class="bx box-all" :class="{changeStyle:cName==item}" v-for="item in selectArr"
-                                v-show="isSame && arrValue.length>1 || item=='All'" @click="sliceBlock(item)">{{item}}
+                            <div class="bx box-all" :class="{changeStyle:cName==item,moveBock:mBock==item}" v-for="item in selectArr"
+                                v-show="isSame && arrValue.length>1 || item=='All'" @click="sliceBlock(item)" @mousemove="mBock=item" @mouseleave="mBock=''">{{item}}
                             </div>
 
                         </div>
@@ -67,6 +67,7 @@
                 isDisplay: true,
                 isDelete: true,
                 cName: 'All',
+                mBock:'',
                 isSame: false,
                 selectArr: ['All', 'Active', 'Completed', 'Clear completed'],
                 numArr: [],
